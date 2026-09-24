@@ -1,63 +1,59 @@
 # Pocket Money Guide
 
-A calm, personal finance companion for your laptop (Windows, Mac, or Linux).
+**Your honest personal finance advisor for the laptop.**
 
-> “Maintain your balance.”
+> Maintain your balance.
 
-**100% private** — everything stays on your computer. No accounts, no cloud, no tracking.
-
----
-
-## For Windows Users (Easiest Way)
-
-### Option 1 – Just open it (recommended)
-
-1. Download this repository as ZIP  
-   → Green **Code** button → **Download ZIP**
-2. Unzip the folder
-3. Go inside the `docs` folder
-4. Double-click **`index.html`**
-5. It will open in your browser (Chrome / Edge recommended)
-
-That’s it. You can start adding expenses and income immediately.  
-All data is saved automatically in your browser (localStorage).
-
-### Option 2 – Use it offline forever
-
-After opening `index.html` once, you can bookmark it or pin the tab.  
-It works completely offline after the first open.
-
-### Option 3 – Make a desktop shortcut
-
-1. Open `index.html` in Chrome or Edge
-2. Click the three-dot menu → **Cast, save and share** → **Install page as app**  
-   (or in Edge: **Apps** → **Install this site as an app**)
-3. You will get a normal Windows app icon you can pin to taskbar or Start menu
+This is no longer a simple calculator.  
+It analyses your spending, tells you what you’re doing wrong, gives clear advice, and helps you track goals.
 
 ---
 
-## Features
+## What it does now
 
-- Clean dark interface designed for laptop screens
-- Overview of your overall balance
-- Add Income / Expense with categories
-- Transactions list
-- Simple reports with category breakdown
-- All data stays only on your computer
-- Calm design focused on clarity and balance
-
----
-
-## Personal Use Only
-
-This tool is made for your personal use.  
-No data leaves your computer.
+- **Money Health Score** (0–100) based on your real data
+- **Honest Advice** that points out problems:
+  - Spending more than you earn
+  - Food / Shopping / Entertainment too high
+  - Low savings rate
+  - Missing emergency fund
+  - Goals that need attention
+- **Goal tracking** with progress bars
+- **Clear overview** of income, expense, savings rate and category breakdown
+- Still 100% private — everything stays on your computer
 
 ---
 
-## Technical Note
+## How to use on Windows (Laptop)
 
-This is a lightweight offline web app.  
-It does not require installation, internet (after first open), or any account.
+1. Go to the repository:  
+   **https://github.com/DrShikharMishra/Pocket-Money-Guide**
 
-If you later want a true native Windows version (Python / Tauri / Electron), just ask.
+2. Click the green **Code** button → **Download ZIP**
+
+3. Unzip the folder
+
+4. Open the **`docs`** folder
+
+5. Double-click **`index.html`**
+
+6. It opens in Chrome or Edge. Start adding your income and expenses.
+
+### Optional: Make it a desktop app
+
+- Open `index.html` in Chrome or Edge
+- Click the three-dot menu → **Install page as app** (or “Apps” → “Install this site as an app”)
+- You get a normal Windows app icon
+
+---
+
+## Tips for best results
+
+- Add **all** your income (salary, freelance, etc.)
+- Be honest with expenses
+- Create at least one goal (especially an Emergency Fund)
+- Check the **Advisor** tab regularly — it updates as you add data
+
+---
+
+Personal use only. No accounts. No cloud. No tracking.
