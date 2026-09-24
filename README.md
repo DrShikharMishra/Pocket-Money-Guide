@@ -1,59 +1,70 @@
 # Pocket Money Guide
 
-**Your honest personal finance advisor for the laptop.**
+**A powerful, private personal finance advisor for your laptop.**
 
 > Maintain your balance.
 
-This is no longer a simple calculator.  
-It analyses your spending, tells you what you’re doing wrong, gives clear advice, and helps you track goals.
+---
+
+## Features
+
+### Advisor Engine
+- Money Health Score (0–100)
+- Honest, direct feedback on what’s wrong
+- Detects overspending, low savings rate, category imbalances, missing emergency fund, lagging goals, budget overruns
+
+### Core Tracking
+- Income & Expense transactions
+- Categories with icons
+- Notes + dates
+- Full edit & delete
+- Search + filter by category/type
+
+### Budgets
+- Monthly category limits
+- Live progress bars
+- Overspend warnings
+
+### Goals
+- Create savings goals with targets & deadlines
+- Progress tracking
+- Add money anytime
+
+### Recurring
+- Track salary, rent, subscriptions, etc.
+- Monthly / Weekly / Yearly
+
+### Insights
+- Category rankings
+- Savings rate
+- Monthly snapshots
+- Practical recommendations
+
+### Data
+- 100% offline
+- Export / Import backup (JSON)
+- Everything stays on your computer
 
 ---
 
-## What it does now
+## How to use on Windows
 
-- **Money Health Score** (0–100) based on your real data
-- **Honest Advice** that points out problems:
-  - Spending more than you earn
-  - Food / Shopping / Entertainment too high
-  - Low savings rate
-  - Missing emergency fund
-  - Goals that need attention
-- **Goal tracking** with progress bars
-- **Clear overview** of income, expense, savings rate and category breakdown
-- Still 100% private — everything stays on your computer
+1. Open the repository: https://github.com/DrShikharMishra/Pocket-Money-Guide
+2. Click **Code** → **Download ZIP**
+3. Unzip
+4. Open the `docs` folder
+5. Double-click `index.html`
+
+It opens in Chrome or Edge.  
+Optional: Install it as a desktop app from the browser menu.
 
 ---
 
-## How to use on Windows (Laptop)
+## Tips
 
-1. Go to the repository:  
-   **https://github.com/DrShikharMishra/Pocket-Money-Guide**
-
-2. Click the green **Code** button → **Download ZIP**
-
-3. Unzip the folder
-
-4. Open the **`docs`** folder
-
-5. Double-click **`index.html`**
-
-6. It opens in Chrome or Edge. Start adding your income and expenses.
-
-### Optional: Make it a desktop app
-
-- Open `index.html` in Chrome or Edge
-- Click the three-dot menu → **Install page as app** (or “Apps” → “Install this site as an app”)
-- You get a normal Windows app icon
-
----
-
-## Tips for best results
-
-- Add **all** your income (salary, freelance, etc.)
-- Be honest with expenses
-- Create at least one goal (especially an Emergency Fund)
-- Check the **Advisor** tab regularly — it updates as you add data
-
----
+- Add **all** income and expenses for accurate advice
+- Check the **Advisor** tab regularly
+- Set at least one goal (especially Emergency Fund)
+- Create budgets for your biggest spending categories
 
 Personal use only. No accounts. No cloud. No tracking.
