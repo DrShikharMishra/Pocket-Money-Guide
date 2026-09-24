@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pocket Money Guide – Web Preview</title>
+  <style>
+    :root {
+      --bg: #0d0d0f;
+      --sidebar: #141417;
+      --card: #1c1c21;
+      --card-hover: #24242b;
+      --text: #f0f0f5;
+      --text-secondary: #9a9aa8;
+      --accent: #3b82f6;
+      --green: #22c55e;
+      --red: #ef4444;
+      --border: #2a2a32;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 20px 12px;
+      flex-shrink: 0;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 700;
+      padding: 8px 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo span {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.15s;
+      margin-bottom: 2px;
+    }
+
+    .nav-item:hover {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+    }
+
+    .nav-item.active {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+    }
+
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      opacity: 0.85;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 52px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: rgba(13,13,15,0.8);
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar h1 {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    /* Cards */
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 640px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 650;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 20px;
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--green);
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+
+    .net-amount {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    .net-amount.positive { color: var(--green); }
+    .net-amount.negative { color: var(--red); }
+
+    .row {
+      display: flex;
+      gap: 28px;
+      margin-bottom: 14px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .stat-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .stat-icon.expense { background: rgba(239,68,68,0.15); color: var(--red); }
+    .stat-icon.income  { background: rgba(34,197,94,0.15); color: var(--green); }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .stat-value {
+      font-size: 15px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-value.expense { color: var(--red); }
+    .stat-value.income  { color: var(--green); }
+
+    .insight {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .insight svg {
+      color: var(--green);
+    }
+
+    /* Teaser card */
+    .teaser {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dots {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .dot.dim { opacity: 0.3; }
+
+    .ring {
+      width: 56px;
+      height: 56px;
+      position: relative;
+    }
+
+    .ring svg {
+      transform: rotate(-90deg);
+    }
+
+    .ring-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* Transactions list */
+    .tx-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .tx-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      transition: background 0.15s;
+    }
+
+    .tx-row:hover {
+      background: var(--card-hover);
+    }
+
+    .tx-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(59,130,246,0.15);
+      color: #60a5fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .tx-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .tx-cat {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .tx-note {
+      font-size: 13px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tx-amount {
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      font-size: 15px;
+    }
+
+    /* Reports / Chart */
+    .chart-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .donut-wrap {
+      position: relative;
+      width: 260px;
+      height: 260px;
+    }
+
+    .donut-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .donut-center .total-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .donut-center .total-value {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .legend {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      padding: 13px 16px;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .legend-row:last-child { border-bottom: none; }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .legend-name { flex: 1; font-weight: 500; }
+    .legend-amount { font-variant-numeric: tabular-nums; }
+    .legend-pct { color: var(--text-secondary); width: 40px; text-align: right; font-size: 13px; }
+
+    /* Floating + button */
+    .fab {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(59,130,246,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s, box-shadow 0.15s;
+      z-index: 50;
+    }
+
+    .fab:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 24px rgba(59,130,246,0.55);
+    }
+
+    /* Empty / Placeholder */
+    .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 60vh;
+      color: var(--text-secondary);
+      text-align: center;
+      gap: 12px;
+    }
+
+    .placeholder svg {
+      width: 64px;
+      height: 64px;
+      opacity: 0.4;
+    }
+
+    /* Demo banner */
+    .demo-banner {
+      background: linear-gradient(90deg, #1e3a5f, #2d1b4e);
+      color: #93c5fd;
+      text-align: center;
+      padding: 8px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 700px) {
+      .sidebar { display: none; }
+      .content { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-banner">
+    🌐 Web Preview of <strong>Pocket Money Guide</strong> — This is a static demo. The real app runs natively on iOS.
+  </div>
+
+  <aside class="sidebar">
+    <div class="logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#grad)" stroke-width="2"><defs><linearGradient id="grad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3b82f6"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span>Pocket Money Guide</span>
+    </div>
+
+    <div class="nav-item active" data-page="overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Overview
+    </div>
+    <div class="nav-item" data-page="accounts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Accounts
+    </div>
+    <div class="nav-item" data-page="budgets">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+      Budgets
+    </div>
+    <div class="nav-item" data-page="transactions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Transactions
+    </div>
+    <div class="nav-item" data-page="reports">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Reports
+    </div>
+    <div class="nav-item" data-page="goals">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      Goals
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1 id="page-title">Overview</h1>
+      <div style="font-size:13px;color:var(--text-secondary)">Demo Mode</div>
+    </div>
+
+    <div class="content" id="content">
+      <!-- Filled by JS -->
+    </div>
+  </main>
+
+  <button class="fab" title="Add Transaction" onclick="alert('In the real iOS app this opens the Add Transaction sheet.')">+</button>
+
+  <script>
+    // Sample data matching the screenshots
+    const transactions = [
+      { cat: "Salary", note: "Monthly salary", amount: 1850, expense: false, icon: "💰" },
+      { cat: "Food", note: "Swiggy order", amount: 420.50, expense: true, icon: "🍴" },
+      { cat: "Housing", note: "Rent contribution", amount: 1200, expense: true, icon: "🏠" },
+      { cat: "Transport", note: "Uber & metro", amount: 350, expense: true, icon: "🚗" },
+      { cat: "Entertainment", note: "Netflix + Spotify", amount: 899, expense: true, icon: "📺" },
+      { cat: "Transfer", note: "To savings", amount: 2500, expense: true, icon: "↔️" },
+      { cat: "Food", note: "Cafe", amount: 150.75, expense: true, icon: "🍴" },
+      { cat: "Salary", note: "Freelance", amount: 5000, expense: false, icon: "💰" },
+      { cat: "Utilities", note: "Electricity bill", amount: 680, expense: true, icon: "⚡" },
+      { cat: "Health", note: "Pharmacy", amount: 320, expense: true, icon: "❤️" },
+    ];
+
+    const formatINR = (n) => {
+      return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        minimumFractionDigits: 2
+      }).format(n);
+    };
+
+    const pages = {
+      overview: () => {
+        const income = transactions.filter(t => !t.expense).reduce((s,t) => s + t.amount, 0);
+        const expense = transactions.filter(t => t.expense).reduce((s,t) => s + t.amount, 0);
+        const net = income - expense;
+        const pct = income > 0 ? Math.round(((income - expense) / income) * 100) : 0;
+
+        return `
+          <div class="cards">
+            <!-- Teaser -->
+            <div class="card teaser">
+              <div>
+                <div class="dots">
+                  <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                  <div class="dot"></div><div class="dot"></div>
+                  <div class="dot dim"></div><div class="dot dim"></div><div class="dot dim"></div>
+                </div>
+                <div style="font-size:14px;color:var(--text-secondary)">Less than a week until your next paycheck arrives.</div>
+              </div>
+              <div class="ring">
+                <svg width="56" height="56" viewBox="0 0 56 56">
+                  <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(59,130,246,0.25)" stroke-width="5"/>
+                  <circle cx="28" cy="28" r="24" fill="none" stroke="#3b82f6" stroke-width="5"
+                    stroke-dasharray="150.8" stroke-dashoffset="42" stroke-linecap="round"/>
+                </svg>
+                <div class="ring-text">DAYS</div>
+              </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Summary</div>
+                <div class="badge">Positive</div>
+              </div>
+              <div class="card-subtitle">September 2026</div>
+              <div class="net-amount positive">${formatINR(net)}</div>
+              <div class="row">
+                <div class="stat">
+                  <div class="stat-icon expense">↓</div>
+                  <div>
+                    <div class="stat-label">Expense</div>
+                    <div class="stat-value expense">-${formatINR(expense)}</div>
+                  </div>
+                </div>
+                <div class="stat">
+                  <div class="stat-icon income">↑</div>
+                  <div>
+                    <div class="stat-label">Income</div>
+                    <div class="stat-value income">+${formatINR(income)}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="insight">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                ${pct}% of income left after spending
+              </div>
+            </div>
+
+            <!-- Last 7 Days -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Last 7 Days</div>
+              </div>
+              <div class="card-subtitle">19 Sep 2026 – 25 Sep 2026</div>
+              <div class="net-amount negative">-${formatINR(421.92)}</div>
+              <div class="row">
+                <div class="stat">
+                  <div class="stat-icon expense">↓</div>
+                  <div>
+                    <div class="stat-label">Expense</div>
+                    <div class="stat-value expense">-${formatINR(421.92)}</div>
+                  </div>
+                </div>
+                <div class="stat">
+                  <div class="stat-icon income">↑</div>
+                  <div>
+                    <div class="stat-label">Income</div>
+                    <div class="stat-value income">+${formatINR(0)}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="insight">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                Income matched spending
+              </div>
+            </div>
+
+            <!-- This Month -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">This Month</div>
+                <div class="badge">Positive</div>
+              </div>
+              <div class="card-subtitle">September 2026</div>
+              <div class="net-amount positive">${formatINR(969.54)}</div>
+              <div class="row">
+                <div class="stat">
+                  <div class="stat-icon expense">↓</div>
+                  <div>
+                    <div class="stat-label">Expense</div>
+                    <div class="stat-value expense">-${formatINR(2880.46)}</div>
+                  </div>
+                </div>
+                <div class="stat">
+                  <div class="stat-icon income">↑</div>
+                  <div>
+                    <div class="stat-label">Income</div>
+                    <div class="stat-value income">+${formatINR(3850)}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="insight">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                25% of income left after spending
+              </div>
+            </div>
+          </div>
+        `;
+      },
+
+      transactions: () => `
+        <div class="tx-list">
+          ${transactions.map(t => `
+            <div class="tx-row">
+              <div class="tx-icon">${t.icon}</div>
+              <div class="tx-info">
+                <div class="tx-cat">${t.cat}</div>
+                <div class="tx-note">${t.note}</div>
+              </div>
+              <div class="tx-amount" style="color:${t.expense ? 'var(--red)' : 'var(--green)'}">
+                ${t.expense ? '-' : '+'}${formatINR(t.amount)}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `,
+
+      reports: () => {
+        const cats = {};
+        transactions.filter(t => t.expense).forEach(t => {
+          cats[t.cat] = (cats[t.cat] || 0) + t.amount;
+        });
+        const sorted = Object.entries(cats).sort((a,b) => b[1] - a[1]);
+        const total = sorted.reduce((s, [,v]) => s + v, 0);
+        const colors = ['#f43f5e','#3b82f6','#f97316','#a855f7','#22c55e','#06b6d4','#ec4899'];
+
+        // Simple CSS conic-gradient donut
+        let acc = 0;
+        const stops = sorted.map(([name, val], i) => {
+          const start = acc;
+          acc += (val / total) * 100;
+          return `${colors[i % colors.length]} ${start}% ${acc}%`;
+        }).join(', ');
+
+        return `
+          <div class="chart-container">
+            <div class="donut-wrap">
+              <div style="
+                width:260px;height:260px;border-radius:50%;
+                background: conic-gradient(${stops});
+                mask: radial-gradient(circle at center, transparent 62%, black 63%);
+                -webkit-mask: radial-gradient(circle at center, transparent 62%, black 63%);
+              "></div>
+              <div class="donut-center">
+                <div class="total-label">Total Expense</div>
+                <div class="total-value">${formatINR(total)}</div>
+              </div>
+            </div>
+
+            <div class="legend">
+              ${sorted.map(([name, val], i) => `
+                <div class="legend-row">
+                  <div class="legend-dot" style="background:${colors[i % colors.length]}"></div>
+                  <div class="legend-name">${name}</div>
+                  <div class="legend-amount">${formatINR(val)}</div>
+                  <div class="legend-pct">${Math.round((val/total)*100)}%</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      },
+
+      budgets: () => `
+        <div class="placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+          <h2>Budgets</h2>
+          <p>Create budgets in the real iOS app.<br>Track spending limits with live progress bars.</p>
+        </div>
+      `,
+
+      accounts: () => `
+        <div class="placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          <h2>Accounts</h2>
+          <p>Coming soon in a future update.</p>
+        </div>
+      `,
+
+      goals: () => `
+        <div class="placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <h2>Goals</h2>
+          <p>Coming soon — set savings targets and track progress.</p>
+        </div>
+      `
+    };
+
+    function showPage(name) {
+      document.getElementById('content').innerHTML = pages[name]();
+      document.getElementById('page-title').textContent = name.charAt(0).toUpperCase() + name.slice(1);
+      document.querySelectorAll('.nav-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.page === name);
+      });
+    }
+
+    document.querySelectorAll('.nav-item').forEach(el => {
+      el.addEventListener('click', () => showPage(el.dataset.page));
+    });
+
+    // Start on Overview
+    showPage('overview');
+  </script>
+</body>
+</html>
