@@ -57,17 +57,20 @@ input:focus,select:focus{border-color:var(--accent)}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
 .toast{position:fixed;bottom:22px;right:22px;background:#1a1a20;border:1px solid var(--border);padding:11px 16px;border-radius:10px;font-size:13px;z-index:200;opacity:0;transition:opacity .3s}
 .toast.show{opacity:1}
-.daily-box{background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(168,85,247,.1));border:1px solid rgba(99,102,241,.3);border-radius:14px;padding:20px;margin-bottom:16px;text-align:center}
-.daily-amount{font-size:36px;font-weight:800;color:#a5b4fc;margin:8px 0}
+.daily-box{background:linear-gradient(135deg,rgba(99,102,241,.18),rgba(168,85,247,.12));border:1px solid rgba(99,102,241,.35);border-radius:16px;padding:22px;margin-bottom:16px;text-align:center}
+.daily-amount{font-size:38px;font-weight:800;color:#a5b4fc;margin:8px 0}
+.calc-row{display:flex;justify-content:space-between;padding:7px 0;font-size:13.5px;border-bottom:1px solid var(--border)}
+.calc-row:last-child{border-bottom:none;font-weight:700;padding-top:10px}
 @media(max-width:900px){.grid-3,.grid-2{grid-template-columns:1fr}.sidebar{width:190px}}
 </style>
 </head>
 <body>
 <aside class="sidebar">
   <div class="logo"><div class="logo-icon">₹</div>Pocket Money Guide</div>
-  <div class="tagline">Built for medical students.<br>Maintain your balance.</div>
+  <div class="tagline">Built for medical students.<br>Smart daily allowance.</div>
   <div class="nav-item active" data-page="advisor">Advisor</div>
   <div class="nav-item" data-page="daily">Daily Allowance</div>
+  <div class="nav-item" data-page="outings">Planned Outings</div>
   <div class="nav-item" data-page="dashboard">Dashboard</div>
   <div class="nav-item" data-page="transactions">Transactions</div>
   <div class="nav-item" data-page="budgets">Budgets</div>
@@ -105,7 +108,7 @@ input:focus,select:focus{border-color:var(--accent)}
         <option>Food</option><option>Transport</option><option>Housing</option><option>Utilities</option>
         <option>Entertainment</option><option>Shopping</option><option>Health</option>
         <option>Books & Materials</option><option>College Fees</option>
-        <option>Salary</option><option>Pocket Money</option><option>Scholarship</option><option>Other</option>
+        <option>Pocket Money</option><option>Scholarship</option><option>Stipend</option><option>Other</option>
       </select>
     </div>
     <div class="form-group"><label>Note</label><input type="text" id="txNote" placeholder="Optional"></div>
@@ -135,7 +138,7 @@ input:focus,select:focus{border-color:var(--accent)}
 <div class="modal-bg" id="modal-goal">
   <div class="modal">
     <h2>New Goal</h2>
-    <div class="form-group"><label>Name</label><input type="text" id="gName" placeholder="Emergency Fund / Stethoscope"></div>
+    <div class="form-group"><label>Name</label><input type="text" id="gName" placeholder="Emergency Fund"></div>
     <div class="form-group"><label>Target (₹)</label><input type="number" id="gTarget" min="1"></div>
     <div class="form-group"><label>Already Saved (₹)</label><input type="number" id="gCurrent" value="0" min="0"></div>
     <div class="modal-actions">
@@ -149,7 +152,7 @@ input:focus,select:focus{border-color:var(--accent)}
 <div class="modal-bg" id="modal-sts">
   <div class="modal">
     <h2>New Save to Spend</h2>
-    <div class="form-group"><label>Name</label><input type="text" id="stsName" placeholder="New Phone / Vacation / Laptop"></div>
+    <div class="form-group"><label>Name</label><input type="text" id="stsName" placeholder="New Phone / Laptop"></div>
     <div class="form-group"><label>Target (₹)</label><input type="number" id="stsTarget" min="1"></div>
     <div class="form-group"><label>Already Saved (₹)</label><input type="number" id="stsCurrent" value="0" min="0"></div>
     <div class="modal-actions">
@@ -163,7 +166,7 @@ input:focus,select:focus{border-color:var(--accent)}
 <div class="modal-bg" id="modal-bill">
   <div class="modal">
     <h2>Add Bill</h2>
-    <div class="form-group"><label>Bill Name</label><input type="text" id="billName" placeholder="Hostel Rent / Electricity"></div>
+    <div class="form-group"><label>Bill Name</label><input type="text" id="billName" placeholder="Hostel Rent"></div>
     <div class="form-group"><label>Amount (₹)</label><input type="number" id="billAmount" min="1"></div>
     <div class="form-group"><label>Due Date</label><input type="date" id="billDue"></div>
     <div class="modal-actions">
@@ -177,11 +180,25 @@ input:focus,select:focus{border-color:var(--accent)}
 <div class="modal-bg" id="modal-sub">
   <div class="modal">
     <h2>Add Subscription</h2>
-    <div class="form-group"><label>Name</label><input type="text" id="subName" placeholder="Netflix / Spotify / Marrow"></div>
+    <div class="form-group"><label>Name</label><input type="text" id="subName" placeholder="Marrow / Netflix"></div>
     <div class="form-group"><label>Monthly Amount (₹)</label><input type="number" id="subAmount" min="1"></div>
     <div class="modal-actions">
       <button class="btn secondary" onclick="closeModal('sub')">Cancel</button>
       <button class="btn" onclick="saveSub()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Outing Modal -->
+<div class="modal-bg" id="modal-outing">
+  <div class="modal">
+    <h2>Add Planned Outing</h2>
+    <div class="form-group"><label>Outing Name</label><input type="text" id="outName" placeholder="Movie / Dinner / Trip"></div>
+    <div class="form-group"><label>Amount per outing (₹)</label><input type="number" id="outAmount" min="1" placeholder="500"></div>
+    <div class="form-group"><label>How many times this month?</label><input type="number" id="outTimes" min="1" value="1"></div>
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModal('outing')">Cancel</button>
+      <button class="btn" onclick="saveOuting()">Save</button>
     </div>
   </div>
 </div>
@@ -203,7 +220,11 @@ let goals = load('pmg_goals', []);
 let sts = load('pmg_sts', []);
 let bills = load('pmg_bills', []);
 let subs = load('pmg_subs', []);
+let outings = load('pmg_outings', []);
 let isExpense = true;
+
+// Monthly settings (user can set total monthly money)
+let settings = load('pmg_settings', { monthlyBudget: 0 });
 
 function saveAll() {
   persist('pmg_tx', tx);
@@ -212,6 +233,8 @@ function saveAll() {
   persist('pmg_sts', sts);
   persist('pmg_bills', bills);
   persist('pmg_subs', subs);
+  persist('pmg_outings', outings);
+  persist('pmg_settings', settings);
 }
 
 function fmt(n) {
@@ -243,6 +266,9 @@ function catSpend(cat) {
 }
 
 function totalSubs() { return subs.reduce((s,x) => s + x.amount, 0); }
+function totalOutings() { return outings.reduce((s,o) => s + (o.amount * o.times), 0); }
+function totalBudgets() { return budgets.reduce((s,b) => s + b.limit, 0); }
+function totalUnpaidBills() { return bills.filter(b => !b.paid).reduce((s,b) => s + b.amount, 0); }
 
 function daysUntil(dateStr) {
   const due = new Date(dateStr); due.setHours(0,0,0,0);
@@ -250,65 +276,59 @@ function daysUntil(dateStr) {
   return Math.round((due - today) / 86400000);
 }
 
-// ===== MEDICAL STUDENT DAILY ALLOWANCE ENGINE =====
+// ===================== SMART DAILY ALLOWANCE ENGINE =====================
 function getDailyAllowance() {
-  const { income } = calc();
-  const monthTx = thisMonth();
-  const monthIncome = monthTx.filter(t => !t.expense).reduce((s,t) => s + t.amount, 0);
-  const monthExpense = monthTx.filter(t => t.expense).reduce((s,t) => s + t.amount, 0);
-
-  // Use this month's income if available, otherwise overall average
-  let monthlyIncome = monthIncome > 0 ? monthIncome : (income > 0 ? income : 0);
-
-  // Fixed obligations this month
-  const fixedBills = bills.filter(b => !b.paid).reduce((s,b) => s + b.amount, 0);
-  const monthlySubs = totalSubs();
-  const budgetTotal = budgets.reduce((s,b) => s + b.limit, 0);
-
-  // Recommended allocations for medical students
-  // 20% savings/goals, rest for living
-  const savingsTarget = monthlyIncome * 0.20;
-  const availableForLiving = monthlyIncome - savingsTarget - monthlySubs - fixedBills;
-
-  // Days left in month
   const now = new Date();
   const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
   const dayOfMonth = now.getDate();
   const daysLeft = daysInMonth - dayOfMonth + 1;
 
-  // Already spent this month on flexible categories
-  const flexibleSpent = monthExpense - monthlySubs; // rough
+  // 1. Starting money this month
+  // Priority: User-set monthly budget > actual income recorded this month > overall income
+  const monthIncome = thisMonth().filter(t => !t.expense).reduce((s,t) => s + t.amount, 0);
+  const overallIncome = calc().income;
+  let startingMoney = settings.monthlyBudget > 0 ? settings.monthlyBudget : (monthIncome > 0 ? monthIncome : overallIncome);
 
-  // Safe daily allowance
-  let daily = 0;
-  if (availableForLiving > 0 && daysLeft > 0) {
-    daily = Math.floor(availableForLiving / daysLeft);
-  }
+  // 2. Things that must be removed first
+  const savings = startingMoney * 0.20;                    // 20% forced savings
+  const subscriptions = totalSubs();
+  const plannedOutings = totalOutings();
+  const unpaidBills = totalUnpaidBills();
+  const fixedBudgets = totalBudgets();                     // optional category budgets
+
+  // 3. Remaining after all planned things
+  const totalDeductions = savings + subscriptions + plannedOutings + unpaidBills;
+  const remaining = Math.max(0, startingMoney - totalDeductions);
+
+  // 4. Daily allowance
+  const daily = daysLeft > 0 ? Math.floor(remaining / daysLeft) : 0;
 
   // Today's spending
   const todayStr = now.toISOString().slice(0,10);
   const spentToday = tx.filter(t => t.expense && t.date.slice(0,10) === todayStr)
                        .reduce((s,t) => s + t.amount, 0);
-
   const remainingToday = Math.max(0, daily - spentToday);
 
   return {
-    monthlyIncome,
-    savingsTarget,
-    monthlySubs,
-    fixedBills,
-    availableForLiving: Math.max(0, availableForLiving),
+    startingMoney,
+    savings,
+    subscriptions,
+    plannedOutings,
+    unpaidBills,
+    fixedBudgets,
+    totalDeductions,
+    remaining,
     daysLeft,
+    daysInMonth,
+    dayOfMonth,
     daily,
     spentToday,
-    remainingToday,
-    daysInMonth,
-    dayOfMonth
+    remainingToday
   };
 }
 
 function healthScore() {
-  const { rate, net, income } = calc();
+  const { rate, net } = calc();
   let s = 45;
   if (net > 0) s += 15;
   if (rate >= 25) s += 20;
@@ -316,73 +336,64 @@ function healthScore() {
   else if (rate < 0) s -= 20;
   if (goals.length) s += 5;
   if (budgets.length) s += 5;
-  if (sts.length) s += 4;
-  if (totalSubs() > 0 && income > 0 && totalSubs()/income > 0.12) s -= 8;
+  if (outings.length) s += 3;
   return Math.max(0, Math.min(100, Math.round(s)));
 }
 
 function getAdvice() {
-  const { income, net, rate } = calc();
-  const daily = getDailyAllowance();
+  const { net, rate, income } = calc();
+  const d = getDailyAllowance();
   const advice = [];
 
-  if (tx.length === 0) {
-    return [{ type:'warn', title:'Start tracking', text:'Add your pocket money / scholarship / stipend first so I can calculate your safe daily spending limit.' }];
+  if (tx.length === 0 && settings.monthlyBudget === 0) {
+    return [{ type:'warn', title:'Set your monthly money first', text:'Go to Daily Allowance page and set your total monthly budget (or add Income). Then I can calculate your real daily limit.' }];
   }
 
-  if (net < 0) advice.push({ type:'bad', title:'You are overspending', text:'You have spent more than you received. Be careful for the rest of the month.' });
-
-  if (daily.daily > 0) {
-    advice.push({ type:'good', title:'Your safe daily limit', text:`You can comfortably spend up to ${fmt(daily.daily)} per day for the rest of this month without hurting your savings.` });
+  if (d.daily > 0) {
+    advice.push({ type:'good', title:'Your true daily allowance', text:`After savings, subscriptions, bills and planned outings, you can spend ${fmt(d.daily)} per day.` });
   }
 
-  if (daily.spentToday > daily.daily && daily.daily > 0) {
-    advice.push({ type:'bad', title:'You exceeded today’s limit', text:`You already spent ${fmt(daily.spentToday)} today. Try to spend less tomorrow.` });
-  } else if (daily.remainingToday < daily.daily * 0.3 && daily.daily > 0) {
-    advice.push({ type:'warn', title:'Running low for today', text:`Only ${fmt(daily.remainingToday)} left for today. Be mindful.` });
+  if (d.spentToday > d.daily && d.daily > 0) {
+    advice.push({ type:'bad', title:'You crossed today’s limit', text:`Spent ${fmt(d.spentToday)} today. Try to stay under ${fmt(d.daily)} tomorrow.` });
   }
 
-  if (rate < 15 && income > 0) advice.push({ type:'warn', title:'Try to save more', text:`Current savings rate is ${rate.toFixed(1)}%. Even 20% will help a lot during internship/residency.` });
-
-  const subTotal = totalSubs();
-  if (subTotal > 0 && income > 0 && subTotal/income > 0.1) {
-    advice.push({ type:'warn', title:'Subscriptions are high', text:`You spend ${fmt(subTotal)}/month on subscriptions. Review Marrow, Netflix etc.` });
+  if (d.plannedOutings > 0) {
+    advice.push({ type:'warn', title:'Planned outings are reserved', text:`${fmt(d.plannedOutings)} is already kept aside for your outings. Don’t use it for daily spending.` });
   }
+
+  if (net < 0) advice.push({ type:'bad', title:'Overall overspending', text:'You have spent more than you received. Be careful.' });
+  if (rate < 15 && income > 0) advice.push({ type:'warn', title:'Savings are low', text:`Only ${rate.toFixed(1)}% saved. Try to protect the 20% savings portion.` });
 
   const overdue = bills.filter(b => !b.paid && daysUntil(b.due) < 0);
   if (overdue.length) advice.push({ type:'bad', title: overdue.length + ' overdue bill(s)', text: overdue.map(b => b.name).join(', ') });
 
-  if (sts.length === 0) advice.push({ type:'warn', title:'No Save-to-Spend funds', text:'Create one for books, stethoscope, laptop or exams so big expenses don’t shock you.' });
-
-  if (goals.length === 0) advice.push({ type:'warn', title:'No goals set', text:'Set a small Emergency Fund goal. Medical life has unexpected costs.' });
-
   if (advice.filter(a => a.type === 'bad').length === 0 && net >= 0) {
-    advice.push({ type:'good', title:'You’re managing well', text:'Keep tracking daily. Small discipline now = less stress later in MBBS/internship.' });
+    advice.push({ type:'good', title:'You are on track', text:'Keep spending within the daily limit and your plan will work.' });
   }
 
   return advice;
 }
 
-// Pages
+// ===================== PAGES =====================
 const pages = {
   advisor() {
     const score = healthScore();
     const advice = getAdvice();
     const { income, expense, rate } = calc();
-    const daily = getDailyAllowance();
+    const d = getDailyAllowance();
     const color = score >= 70 ? 'var(--green)' : score >= 45 ? 'var(--orange)' : 'var(--red)';
     const label = score >= 70 ? 'Good' : score >= 45 ? 'Needs Work' : 'Critical';
 
     return `
       <div class="daily-box">
-        <div style="font-size:13px;color:var(--muted);font-weight:600">SAFE DAILY SPENDING LIMIT</div>
-        <div class="daily-amount">${daily.daily > 0 ? fmt(daily.daily) : '—'}</div>
+        <div style="font-size:13px;color:var(--muted);font-weight:600">TRUE DAILY ALLOWANCE</div>
+        <div class="daily-amount">${d.daily > 0 ? fmt(d.daily) : '—'}</div>
         <div style="font-size:13px;color:var(--muted)">
-          ${daily.daily > 0 ? `You can spend this much every day for the next ${daily.daysLeft} days` : 'Add your monthly income to calculate'}
+          ${d.daily > 0 ? `Safe to spend every day for next ${d.daysLeft} days` : 'Set monthly budget or add income first'}
         </div>
-        ${daily.daily > 0 ? `<div style="margin-top:10px;font-size:13px">
-          Today spent: <strong style="color:${daily.spentToday > daily.daily ? 'var(--red)' : 'var(--green)'}">${fmt(daily.spentToday)}</strong>
-          &nbsp;·&nbsp; Left today: <strong>${fmt(daily.remainingToday)}</strong>
+        ${d.daily > 0 ? `<div style="margin-top:12px;font-size:13.5px">
+          Today spent: <strong style="color:${d.spentToday > d.daily ? 'var(--red)' : 'var(--green)'}">${fmt(d.spentToday)}</strong>
+          &nbsp;→&nbsp; Left today: <strong>${fmt(d.remainingToday)}</strong>
         </div>` : ''}
       </div>
 
@@ -395,7 +406,7 @@ const pages = {
       </div>
 
       <div class="card">
-        <div class="card-title">Honest Advice for You</div>
+        <div class="card-title">Honest Advice</div>
         ${advice.map(a => `<div class="advice ${a.type}"><strong>${a.title}</strong>${a.text}</div>`).join('')}
       </div>
 
@@ -410,82 +421,103 @@ const pages = {
     const d = getDailyAllowance();
     return `
       <div class="daily-box">
-        <div style="font-size:13px;color:var(--muted);font-weight:600">YOUR SAFE DAILY POCKET MONEY</div>
+        <div style="font-size:13px;color:var(--muted);font-weight:600">YOUR TRUE DAILY POCKET MONEY</div>
         <div class="daily-amount">${d.daily > 0 ? fmt(d.daily) : '₹0'}</div>
-        <div style="font-size:13.5px;color:var(--muted);max-width:320px;margin:0 auto">
-          This is how much you can spend per day without touching your savings or fixed bills.
+        <div style="font-size:13.5px;color:var(--muted)">After all planned things are removed</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Set Your Monthly Money</div>
+        <div class="form-group" style="margin-bottom:8px">
+          <label>Total money you get this month (₹)</label>
+          <input type="number" id="monthlyBudgetInput" value="${settings.monthlyBudget || ''}" placeholder="e.g. 5000 or 15000">
         </div>
+        <button class="btn sm" onclick="saveMonthlyBudget()">Save Monthly Budget</button>
+        <div style="font-size:12px;color:var(--muted);margin-top:8px">This is the starting amount used for calculation</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">How Daily Allowance is Calculated</div>
+        <div class="calc-row"><span>Starting Money</span><span>${fmt(d.startingMoney)}</span></div>
+        <div class="calc-row"><span>− 20% Savings (protected)</span><span class="negative">− ${fmt(d.savings)}</span></div>
+        <div class="calc-row"><span>− Subscriptions</span><span class="negative">− ${fmt(d.subscriptions)}</span></div>
+        <div class="calc-row"><span>− Planned Outings</span><span class="negative">− ${fmt(d.plannedOutings)}</span></div>
+        <div class="calc-row"><span>− Unpaid Bills</span><span class="negative">− ${fmt(d.unpaidBills)}</span></div>
+        <div class="calc-row"><span>= Left for daily life</span><span>${fmt(d.remaining)}</span></div>
+        <div class="calc-row"><span>÷ ${d.daysLeft} days left</span><span style="color:#a5b4fc">${fmt(d.daily)} / day</span></div>
       </div>
 
       <div class="grid-2">
         <div class="card">
           <div class="card-title">Today</div>
-          <div style="font-size:15px;margin-bottom:6px">Spent: <strong class="${d.spentToday > d.daily ? 'negative' : 'positive'}">${fmt(d.spentToday)}</strong></div>
-          <div style="font-size:15px">Left: <strong>${fmt(d.remainingToday)}</strong></div>
+          <div>Spent: <strong class="${d.spentToday > d.daily ? 'negative' : 'positive'}">${fmt(d.spentToday)}</strong></div>
+          <div style="margin-top:4px">Left: <strong>${fmt(d.remainingToday)}</strong></div>
         </div>
         <div class="card">
           <div class="card-title">This Month</div>
-          <div style="font-size:15px;margin-bottom:6px">Day ${d.dayOfMonth} of ${d.daysInMonth}</div>
-          <div style="font-size:15px">${d.daysLeft} days remaining</div>
+          <div>Day ${d.dayOfMonth} of ${d.daysInMonth}</div>
+          <div style="margin-top:4px">${d.daysLeft} days remaining</div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-title">How it is calculated (Medical Student Mode)</div>
+        <div class="card-title">Simple Example</div>
         <div style="font-size:13.5px;line-height:1.7;color:var(--muted)">
-          <div>Monthly Income: <strong style="color:var(--text)">${fmt(d.monthlyIncome)}</strong></div>
-          <div>− 20% for Savings/Goals: <strong style="color:var(--text)">${fmt(d.savingsTarget)}</strong></div>
-          <div>− Subscriptions: <strong style="color:var(--text)">${fmt(d.monthlySubs)}</strong></div>
-          <div>− Upcoming unpaid bills: <strong style="color:var(--text)">${fmt(d.fixedBills)}</strong></div>
-          <div style="margin-top:6px">= Available for daily life: <strong style="color:var(--text)">${fmt(d.availableForLiving)}</strong></div>
-          <div>÷ ${d.daysLeft} days left = <strong style="color:#a5b4fc">${fmt(d.daily)} per day</strong></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Tips for Medical Students</div>
-        <div class="advice">
-          <strong>Keep daily spending under the limit</strong>
-          This protects your savings for books, exams, and emergencies.
-        </div>
-        <div class="advice good">
-          <strong>Add your stipend / pocket money as Income</strong>
-          The more accurate your income, the better the daily limit becomes.
-        </div>
-        <div class="advice warn">
-          <strong>Big expenses?</strong>
-          Use “Save to Spend” for books, instruments, or laptop instead of taking from daily money.
+          Suppose you get <strong style="color:var(--text)">₹5,000</strong> this month.<br>
+          − ₹1,000 (20% savings)<br>
+          − ₹1,000 (subscriptions)<br>
+          − ₹1,500 (3 outings × ₹500)<br>
+          − ₹500 (bills)<br>
+          = <strong style="color:var(--text)">₹1,000 left</strong><br>
+          ÷ 30 days = <strong style="color:#a5b4fc">₹33 per day</strong>
         </div>
       </div>`;
+  },
+
+  outings() {
+    const total = totalOutings();
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;max-width:560px">
+        <div class="card-title" style="margin:0">Planned Outings</div>
+        <button class="btn sm" onclick="openModal('outing')">+ Add Outing</button>
+      </div>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:14px;max-width:560px">
+        These amounts are automatically removed before calculating your daily allowance.
+      </p>
+      <div class="card" style="max-width:560px;margin-bottom:14px">
+        <div class="card-title">Total reserved for outings</div>
+        <div class="stat-value">${fmt(total)}</div>
+      </div>
+      ${outings.length === 0 ? `<div class="empty"><h3>No outings planned</h3><p>Add movie, dinner, trip etc. with cost and how many times.</p></div>` :
+      `<div class="card" style="max-width:560px">
+        ${outings.map((o,i) => `
+          <div class="item">
+            <div style="flex:1">
+              <div style="font-weight:600">${o.name}</div>
+              <div style="font-size:12.5px;color:var(--muted)">${o.times} × ${fmt(o.amount)} = ${fmt(o.amount * o.times)}</div>
+            </div>
+            <button class="btn secondary sm" onclick="outings.splice(${i},1);saveAll();showPage('outings')">✕</button>
+          </div>`).join('')}
+      </div>`}`;
   },
 
   dashboard() {
     const { income, expense, net, rate } = calc();
-    const subTotal = totalSubs();
     const d = getDailyAllowance();
     return `
       <div class="grid-3">
         <div class="card"><div class="card-title">Net Balance</div><div class="stat-value ${net>=0?'positive':'negative'}">${fmt(net)}</div></div>
-        <div class="card"><div class="card-title">Daily Limit</div><div class="stat-value" style="color:#a5b4fc">${fmt(d.daily)}</div></div>
+        <div class="card"><div class="card-title">Daily Allowance</div><div class="stat-value" style="color:#a5b4fc">${fmt(d.daily)}</div></div>
         <div class="card"><div class="card-title">Savings Rate</div><div class="stat-value">${rate.toFixed(1)}%</div></div>
       </div>
       <div class="grid-2">
-        <div class="card"><div class="card-title">Total Income</div><div class="stat-value positive">${fmt(income)}</div></div>
-        <div class="card"><div class="card-title">Total Expense</div><div class="stat-value negative">${fmt(expense)}</div></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Quick Stats</div>
-        <div style="display:flex;gap:18px;font-size:13px;flex-wrap:wrap">
-          <span><strong>${tx.length}</strong> transactions</span>
-          <span><strong>${subs.length}</strong> subscriptions (${fmt(subTotal)}/mo)</span>
-          <span><strong>${bills.filter(b=>!b.paid).length}</strong> unpaid bills</span>
-          <span><strong>${sts.length}</strong> sinking funds</span>
-        </div>
+        <div class="card"><div class="card-title">Income</div><div class="stat-value positive">${fmt(income)}</div></div>
+        <div class="card"><div class="card-title">Expense</div><div class="stat-value negative">${fmt(expense)}</div></div>
       </div>`;
   },
 
   transactions() {
-    if (!tx.length) return `<div class="empty"><div style="font-size:32px">📋</div><h3>No transactions yet</h3><p>Add your pocket money or stipend first.</p></div>`;
+    if (!tx.length) return `<div class="empty"><div style="font-size:32px">📋</div><h3>No transactions yet</h3><p>Add your pocket money first.</p></div>`;
     const list = [...tx].reverse();
     return `<div class="card">
       ${list.map(t => `
@@ -506,7 +538,7 @@ const pages = {
         <div class="card-title" style="margin:0">Monthly Budgets</div>
         <button class="btn sm" onclick="openModal('budget')">+ Set Budget</button>
       </div>
-      ${budgets.length === 0 ? `<div class="empty"><h3>No budgets</h3><p>Set limits for Food, Transport, Books etc.</p></div>` :
+      ${budgets.length === 0 ? `<div class="empty"><h3>No budgets</h3></div>` :
       `<div class="card" style="max-width:560px">
         ${budgets.map((b,i) => {
           const spent = catSpend(b.category);
@@ -514,13 +546,10 @@ const pages = {
           const over = spent > b.limit;
           const color = over ? 'var(--red)' : pct > 80 ? 'var(--orange)' : 'var(--green)';
           return `<div style="margin-bottom:14px">
-            <div style="display:flex;justify-content:space-between;font-size:13.5px">
-              <span style="font-weight:600">${b.category}</span>
-              <span style="color:var(--muted)">${fmt(spent)} / ${fmt(b.limit)}</span>
-            </div>
+            <div style="display:flex;justify-content:space-between"><span style="font-weight:600">${b.category}</span><span style="color:var(--muted)">${fmt(spent)} / ${fmt(b.limit)}</span></div>
             <div class="bar"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
             <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)">
-              <span style="color:${color}">${over ? 'Over by ' + fmt(spent-b.limit) : fmt(b.limit-spent) + ' left'}</span>
+              <span style="color:${color}">${over ? 'Over' : fmt(b.limit-spent)+' left'}</span>
               <button class="btn secondary sm" onclick="budgets.splice(${i},1);saveAll();showPage('budgets')">Remove</button>
             </div>
           </div>`;
@@ -534,7 +563,7 @@ const pages = {
         <div class="card-title" style="margin:0">Goals</div>
         <button class="btn sm" onclick="openModal('goal')">+ New Goal</button>
       </div>
-      ${goals.length === 0 ? `<div class="empty"><h3>No goals</h3><p>Try: Emergency Fund, New Stethoscope, Laptop...</p></div>` :
+      ${goals.length === 0 ? `<div class="empty"><h3>No goals</h3></div>` :
       goals.map((g,i) => {
         const pct = Math.min(100, (g.current / g.target) * 100);
         return `<div class="card" style="max-width:560px">
@@ -557,8 +586,7 @@ const pages = {
         <div class="card-title" style="margin:0">Save to Spend</div>
         <button class="btn sm" onclick="openModal('sts')">+ New Fund</button>
       </div>
-      <p style="color:var(--muted);font-size:13px;margin-bottom:14px;max-width:560px">Perfect for books, instruments, exam fees, laptop etc.</p>
-      ${sts.length === 0 ? `<div class="empty"><h3>No funds yet</h3><p>Create one for future planned expenses.</p></div>` :
+      ${sts.length === 0 ? `<div class="empty"><h3>No funds yet</h3></div>` :
       sts.map((s,i) => {
         const pct = Math.min(100, (s.current / s.target) * 100);
         return `<div class="card" style="max-width:560px">
@@ -580,7 +608,7 @@ const pages = {
         <div class="card-title" style="margin:0">Upcoming Bills</div>
         <button class="btn sm" onclick="openModal('bill')">+ Add Bill</button>
       </div>
-      ${sorted.length === 0 ? `<div class="empty"><h3>No bills</h3><p>Track hostel rent, electricity, wifi etc.</p></div>` :
+      ${sorted.length === 0 ? `<div class="empty"><h3>No bills</h3></div>` :
       `<div class="card" style="max-width:560px">
         ${sorted.map((b,i) => {
           const days = daysUntil(b.due);
@@ -614,9 +642,8 @@ const pages = {
       <div class="card" style="max-width:560px">
         <div class="card-title">Total per month</div>
         <div class="stat-value">${fmt(total)}</div>
-        <div style="font-size:12.5px;color:var(--muted);margin-top:2px">${subs.length} active</div>
       </div>
-      ${subs.length === 0 ? `<div class="empty"><h3>No subscriptions</h3><p>Add Marrow, PrepLadder, Netflix, Spotify etc.</p></div>` :
+      ${subs.length === 0 ? `<div class="empty"><h3>No subscriptions</h3></div>` :
       `<div class="card" style="max-width:560px">
         ${subs.map((s,i) => `
           <div class="item">
@@ -630,11 +657,9 @@ const pages = {
 
 function showPage(name) {
   document.getElementById('content').innerHTML = pages[name]();
-  const titles = { savetospend: 'Save to Spend', daily: 'Daily Allowance' };
+  const titles = { savetospend:'Save to Spend', daily:'Daily Allowance', outings:'Planned Outings' };
   document.getElementById('pageTitle').textContent = titles[name] || name.charAt(0).toUpperCase() + name.slice(1);
-  document.querySelectorAll('.nav-item').forEach(el => {
-    el.classList.toggle('active', el.dataset.page === name);
-  });
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.page === name));
 }
 
 document.querySelectorAll('.nav-item').forEach(el => {
@@ -652,122 +677,94 @@ function openModal(id) {
   }
   document.getElementById('modal-' + id).classList.add('show');
 }
-function closeModal(id) {
-  document.getElementById('modal-' + id).classList.remove('show');
-}
+function closeModal(id) { document.getElementById('modal-' + id).classList.remove('show'); }
 function setType(exp) {
   isExpense = exp;
   document.getElementById('typeExp').classList.toggle('active', exp);
   document.getElementById('typeInc').classList.toggle('active', !exp);
 }
 
+function saveMonthlyBudget() {
+  const val = parseFloat(document.getElementById('monthlyBudgetInput').value);
+  if (!val || val <= 0) return alert('Enter a valid amount');
+  settings.monthlyBudget = val;
+  saveAll();
+  showPage('daily');
+  toast('Monthly budget saved');
+}
+
 function saveTx() {
   const amount = parseFloat(document.getElementById('txAmount').value);
   if (!amount || amount <= 0) return alert('Enter a valid amount');
-  tx.push({
-    id: Date.now().toString(),
-    amount,
-    category: document.getElementById('txCat').value,
-    note: document.getElementById('txNote').value.trim(),
-    expense: isExpense,
-    date: new Date().toISOString()
-  });
-  saveAll();
-  closeModal('tx');
-  showPage('transactions');
-  toast('Added');
+  tx.push({ id: Date.now().toString(), amount, category: document.getElementById('txCat').value, note: document.getElementById('txNote').value.trim(), expense: isExpense, date: new Date().toISOString() });
+  saveAll(); closeModal('tx'); showPage('transactions'); toast('Added');
 }
 function deleteTx(id) {
   if (!confirm('Delete?')) return;
-  tx = tx.filter(t => t.id !== id);
-  saveAll();
-  showPage('transactions');
-  toast('Deleted');
+  tx = tx.filter(t => t.id !== id); saveAll(); showPage('transactions'); toast('Deleted');
 }
 function saveBudget() {
   const cat = document.getElementById('bCat').value;
   const limit = parseFloat(document.getElementById('bLimit').value);
   if (!limit || limit <= 0) return alert('Enter a valid limit');
   const idx = budgets.findIndex(b => b.category === cat);
-  if (idx >= 0) budgets[idx].limit = limit;
-  else budgets.push({ category: cat, limit });
-  saveAll();
-  closeModal('budget');
-  showPage('budgets');
-  toast('Budget saved');
+  if (idx >= 0) budgets[idx].limit = limit; else budgets.push({ category: cat, limit });
+  saveAll(); closeModal('budget'); showPage('budgets'); toast('Budget saved');
 }
 function saveGoal() {
   const name = document.getElementById('gName').value.trim();
   const target = parseFloat(document.getElementById('gTarget').value);
   const current = parseFloat(document.getElementById('gCurrent').value) || 0;
   if (!name || !target) return alert('Fill name and target');
-  goals.push({ name, target, current });
-  saveAll();
-  closeModal('goal');
-  showPage('goals');
-  toast('Goal created');
+  goals.push({ name, target, current }); saveAll(); closeModal('goal'); showPage('goals'); toast('Goal created');
 }
 function addToGoal(i) {
   const val = parseFloat(prompt('Amount to add (₹)'));
   if (!val || val <= 0) return;
-  goals[i].current += val;
-  saveAll();
-  showPage('goals');
-  toast('Added');
+  goals[i].current += val; saveAll(); showPage('goals'); toast('Added');
 }
 function saveSTS() {
   const name = document.getElementById('stsName').value.trim();
   const target = parseFloat(document.getElementById('stsTarget').value);
   const current = parseFloat(document.getElementById('stsCurrent').value) || 0;
   if (!name || !target) return alert('Fill name and target');
-  sts.push({ name, target, current });
-  saveAll();
-  closeModal('sts');
-  showPage('savetospend');
-  toast('Fund created');
+  sts.push({ name, target, current }); saveAll(); closeModal('sts'); showPage('savetospend'); toast('Fund created');
 }
 function addToSTS(i) {
   const val = parseFloat(prompt('Amount to add (₹)'));
   if (!val || val <= 0) return;
-  sts[i].current += val;
-  saveAll();
-  showPage('savetospend');
-  toast('Added');
+  sts[i].current += val; saveAll(); showPage('savetospend'); toast('Added');
 }
 function saveBill() {
   const name = document.getElementById('billName').value.trim();
   const amount = parseFloat(document.getElementById('billAmount').value);
   const due = document.getElementById('billDue').value;
   if (!name || !amount || !due) return alert('Fill all fields');
-  bills.push({ name, amount, due, paid: false });
-  saveAll();
-  closeModal('bill');
-  showPage('bills');
-  toast('Bill added');
+  bills.push({ name, amount, due, paid: false }); saveAll(); closeModal('bill'); showPage('bills'); toast('Bill added');
 }
 function saveSub() {
   const name = document.getElementById('subName').value.trim();
   const amount = parseFloat(document.getElementById('subAmount').value);
   if (!name || !amount) return alert('Fill name and amount');
-  subs.push({ name, amount });
-  saveAll();
-  closeModal('sub');
-  showPage('subscriptions');
-  toast('Subscription added');
+  subs.push({ name, amount }); saveAll(); closeModal('sub'); showPage('subscriptions'); toast('Subscription added');
+}
+function saveOuting() {
+  const name = document.getElementById('outName').value.trim();
+  const amount = parseFloat(document.getElementById('outAmount').value);
+  const times = parseInt(document.getElementById('outTimes').value) || 1;
+  if (!name || !amount) return alert('Fill name and amount');
+  outings.push({ name, amount, times }); saveAll(); closeModal('outing'); showPage('outings'); toast('Outing added');
 }
 function exportData() {
-  const data = { tx, budgets, goals, sts, bills, subs, exported: new Date().toISOString() };
+  const data = { tx, budgets, goals, sts, bills, subs, outings, settings, exported: new Date().toISOString() };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url;
-  a.download = 'pocket-money-guide-backup.json';
-  a.click();
-  URL.revokeObjectURL(url);
-  toast('Backup downloaded');
+  a.href = url; a.download = 'pocket-money-guide-backup.json'; a.click();
+  URL.revokeObjectURL(url); toast('Backup downloaded');
 }
 
-['tx','budget','goal','sts','bill','sub'].forEach(id => {
+['tx','budget','goal','sts','bill','sub','outing'].forEach(id => {
   document.getElementById('modal-' + id).addEventListener('click', e => {
     if (e.target.id === 'modal-' + id) closeModal(id);
   });
