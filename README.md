@@ -1,93 +1,63 @@
 # Pocket Money Guide
 
-A beautiful, offline-first personal finance tracker built with **SwiftUI** + **SwiftData**.
+A calm, personal finance companion for your laptop (Windows, Mac, or Linux).
 
-100% private — no bank sync, no cloud, no tracking. Perfect for managing your daily expenses and income.
+> “Maintain your balance.”
 
-## Features
-
-### Fully Implemented
-- **Overview Dashboard** with Summary / Last 7 Days / This Month / Current Year cards
-- **Manual Transaction Entry** (Expense & Income)
-- **Edit & Delete** transactions (tap any row)
-- **Budgets** with progress bars and overspend warnings
-- **Reports** with interactive donut chart + period filter
-- **Proper Indian Rupee formatting** (`₹1,00,000.00` style)
-- Sample data button for instant demo
-- Clean sidebar navigation
-
-### Coming Later
-- Accounts screen
-- Goals / Savings targets
-- Widgets
-
-## Tech Stack
-
-| Layer          | Technology              |
-|----------------|-------------------------|
-| Language       | Swift 5.9+              |
-| UI             | SwiftUI                 |
-| Persistence    | SwiftData               |
-| Charts         | Swift Charts            |
-| Minimum iOS    | iOS 17                  |
-| IDE            | Xcode 15+               |
-
-## Project Structure
-
-```
-Pocket-Money-Guide/
-├── PocketMoneyGuideApp.swift      ← App entry point
-├── ContentView.swift
-├── Models/
-│   ├── Transaction.swift
-│   └── Budget.swift
-├── Views/
-│   ├── OverviewView.swift
-│   ├── TransactionListView.swift  ← Add + Edit
-│   ├── ReportsView.swift
-│   └── BudgetsView.swift
-├── Helpers/
-│   └── CurrencyHelper.swift
-├── .gitignore
-└── README.md
-```
-
-## Quick Start
-
-1. **Clone**
-   ```bash
-   git clone https://github.com/DrShikharMishra/Pocket-Money-Guide.git
-   cd Pocket-Money-Guide
-   ```
-
-2. **Create Xcode Project**
-   - Open Xcode → Create New Project → iOS → App
-   - Product Name: `PocketMoneyGuide` (or any name you like)
-   - Interface: **SwiftUI**
-   - Storage: **SwiftData**
-   - Language: **Swift**
-
-3. **Add the files**
-   - Delete the default `ContentView.swift` and any `Item.swift` that Xcode generates
-   - Drag all the Swift files from this repo into your Xcode project
-   - Make sure `PocketMoneyGuideApp.swift` is the `@main` entry point (rename if needed)
-
-4. **Run**
-   - Choose an iPad or iPhone simulator
-   - Press `⌘R`
-   - Go to **Overview** → tap **Add Sample Data** in the toolbar
-
-## How to Use
-
-1. **Overview** – See your financial health at a glance
-2. **Transactions** – Add, edit (tap a row), or swipe to delete
-3. **Budgets** – Set monthly/weekly/yearly limits per category
-4. **Reports** – Explore spending with the donut chart
-
-## License
-
-MIT — free to use and modify.
+**100% private** — everything stays on your computer. No accounts, no cloud, no tracking.
 
 ---
 
-Built for privacy, speed, and the Indian Rupee 🇮🇳
+## For Windows Users (Easiest Way)
+
+### Option 1 – Just open it (recommended)
+
+1. Download this repository as ZIP  
+   → Green **Code** button → **Download ZIP**
+2. Unzip the folder
+3. Go inside the `docs` folder
+4. Double-click **`index.html`**
+5. It will open in your browser (Chrome / Edge recommended)
+
+That’s it. You can start adding expenses and income immediately.  
+All data is saved automatically in your browser (localStorage).
+
+### Option 2 – Use it offline forever
+
+After opening `index.html` once, you can bookmark it or pin the tab.  
+It works completely offline after the first open.
+
+### Option 3 – Make a desktop shortcut
+
+1. Open `index.html` in Chrome or Edge
+2. Click the three-dot menu → **Cast, save and share** → **Install page as app**  
+   (or in Edge: **Apps** → **Install this site as an app**)
+3. You will get a normal Windows app icon you can pin to taskbar or Start menu
+
+---
+
+## Features
+
+- Clean dark interface designed for laptop screens
+- Overview of your overall balance
+- Add Income / Expense with categories
+- Transactions list
+- Simple reports with category breakdown
+- All data stays only on your computer
+- Calm design focused on clarity and balance
+
+---
+
+## Personal Use Only
+
+This tool is made for your personal use.  
+No data leaves your computer.
+
+---
+
+## Technical Note
+
+This is a lightweight offline web app.  
+It does not require installation, internet (after first open), or any account.
+
+If you later want a true native Windows version (Python / Tauri / Electron), just ask.
